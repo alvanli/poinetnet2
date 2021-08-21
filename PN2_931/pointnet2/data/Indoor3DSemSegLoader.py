@@ -35,7 +35,7 @@ class Indoor3DSemSeg(data.Dataset):
         if download and not os.path.exists(self.data_dir):
             zipfile = os.path.join(BASE_DIR, os.path.basename(self.url))
             subprocess.check_call(
-                shlex.split("wget {}".format(self.url))
+                shlex.split("wget {} --no-check-certificate".format(self.url))
             )
 
             subprocess.check_call(
