@@ -7,7 +7,7 @@ from torch.utils.data import DataLoader
 from pointnet2.data import Indoor3DSemSeg
 from pointnet2.models.pointnet2_ssg_cls import PointNet2ClassificationSSG
 
-
+FEATURE_N = 3
 class PointNet2SemSegSSG(PointNet2ClassificationSSG):
     def _build_model(self):
         self.SA_modules = nn.ModuleList()
@@ -16,7 +16,7 @@ class PointNet2SemSegSSG(PointNet2ClassificationSSG):
                 npoint=1024,
                 radius=0.1,
                 nsample=32,
-                mlp=[3, 32, 32, 64],
+                mlp=[FEATURE_N, 32, 32, 64],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
@@ -49,7 +49,7 @@ class PointNet2SemSegSSG(PointNet2ClassificationSSG):
         )
 
         self.FP_modules = nn.ModuleList()
-        self.FP_modules.append(PointnetFPModule(mlp=[128 + 3, 128, 128, 128]))
+        self.FP_modules.append(PointnetFPModule(mlp=[128 + FEATURE_N, 128, 128, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 64, 256, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 128, 256, 256]))
         self.FP_modules.append(PointnetFPModule(mlp=[512 + 256, 256, 256]))
