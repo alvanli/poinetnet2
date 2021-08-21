@@ -83,7 +83,7 @@ class PointNet2SemSegSSG(PointNet2ClassificationSSG):
             l_xyz.append(li_xyz)
             l_features.append(li_features)
 
-        print("l_features", l_features.size())
+        print("l_features", len(l_features), l_features[0].size())
 
         for i in range(-1, -(len(self.FP_modules) + 1), -1):
             l_features[i - 1] = self.FP_modules[i](
