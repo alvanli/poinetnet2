@@ -6,3 +6,4 @@ Use docker image:
 `docker run -v /mnt/wato-drive/KITTI/dataset/KITTI:/workspace/alvin/KITTI -i -t 22645c78dd69`
 
 `apt-get install wget`
+`apt-get install unzip`
