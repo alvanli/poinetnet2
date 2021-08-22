@@ -54,7 +54,7 @@ class PointNet2SemSegSSG(PointNet2ClassificationSSG):
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 128, 256, 256]))
         self.FP_modules.append(PointnetFPModule(mlp=[512 + 256, 256, 256]))
 
-        self.fc_lyaer = nn.Sequential(
+        self.fc_layer = nn.Sequential(
             nn.Conv1d(128, 128, kernel_size=1, bias=False),
             nn.BatchNorm1d(128),
             nn.ReLU(True),
