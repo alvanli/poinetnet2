@@ -1,9 +1,11 @@
 import torch
 import torch.nn as nn
-from pointnet2_ops.pointnet2_modules import PointnetFPModule, PointnetSAModule
+from pointnet2.pointnet2_modules import PointnetFPModule, PointnetSAModule
 
 def get_model():
     return PointNet2SemSegSSG()
+
+FEATURES_N = 3
 
 class PointNet2SemSegSSG(nn.Module):
     def __init__(self):
@@ -15,7 +17,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=1024,
                 radius=0.1,
                 nsample=32,
-                mlp=[6, 32, 32, 64],
+                mlp=[FEATURES_N, 32, 32, 64],
                 use_xyz=self.use_xyz,
             )
         )
@@ -48,7 +50,7 @@ class PointNet2SemSegSSG(nn.Module):
         )
 
         self.FP_modules = nn.ModuleList()
-        self.FP_modules.append(PointnetFPModule(mlp=[128 + 6, 128, 128, 128]))
+        self.FP_modules.append(PointnetFPModule(mlp=[128 + FEATURES_N, 128, 128, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 64, 256, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 128, 256, 256]))
         self.FP_modules.append(PointnetFPModule(mlp=[512 + 256, 256, 256]))
@@ -97,5 +99,6 @@ class PointNet2SemSegSSG(nn.Module):
                 l_xyz[i - 1], l_xyz[i], l_features[i - 1], l_features[i]
             )
 
-        print("l_features[0]", l_features[0].size())
-        return self.fc_layer(l_features[0])
+        out = self.fc_layer(l_features[0])
+        print("out", out.size())
+        return out
