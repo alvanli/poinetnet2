@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 from pointnet2.pointnet2_modules import PointnetFPModule, PointnetSAModule
@@ -85,7 +86,7 @@ class PointNet2SemSegSSG(nn.Module):
         """
         xyz, features = self._break_up_pc(pointcloud)
         print("xyz: ", xyz.size(), "features", features if features is None else features.size())
-
+        features = torch.zeros_like(xyz)
         l_xyz, l_features = [xyz], [features]
         for i in range(len(self.SA_modules)):
             li_xyz, li_features = self.SA_modules[i](l_xyz[i], l_features[i])
